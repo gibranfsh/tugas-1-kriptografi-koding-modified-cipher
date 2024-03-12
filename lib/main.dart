@@ -4,10 +4,12 @@ import 'package:tugas_2_kriptografi_koding/src/ExtendedVigenereCipher.dart';
 import 'package:tugas_2_kriptografi_koding/src/rc4.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,13 +17,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: EncryptionScreen(),
+      home: const EncryptionScreen(),
     );
   }
 }
 
 class EncryptionScreen extends StatefulWidget {
+  const EncryptionScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _EncryptionScreenState createState() => _EncryptionScreenState();
 }
 
@@ -35,15 +40,15 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('RC4 & Vigenere Cipher'),
+        title: const Text('RC4 & Extended Vigenere Cipher'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Input Text',
               ),
               onChanged: (text) {
@@ -52,9 +57,9 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Key',
               ),
               onChanged: (text) {
@@ -63,11 +68,11 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                 });
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Encrypt'),
+                const Text('Encrypt'),
                 Switch(
                   value: _isEncryptMode,
                   onChanged: (value) {
@@ -76,10 +81,10 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
                     });
                   },
                 ),
-                Text('Decrypt'),
+                const Text('Decrypt'),
               ],
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
                 if (!_isEncryptMode) {
@@ -90,10 +95,10 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               },
               child: Text(!_isEncryptMode ? 'Encrypt' : 'Decrypt'),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Text(
               'Output Text: $_outputText',
-              style: TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0),
             ),
           ],
         ),
@@ -106,7 +111,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     List<int> key = utf8.encode(_key);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> rc4Encrypted = rc4.encrypt(plaintext);
-    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher =
+        ExtendedVigenereCipher(_key);
     List<int> vigenereEncrypted = extendedVigenereCipher.encrypt(rc4Encrypted);
     setState(() {
       _outputText = base64Encode(vigenereEncrypted);
@@ -116,7 +122,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   void _decrypt() {
     List<int> ciphertext = base64Decode(_inputText);
     List<int> key = utf8.encode(_key);
-    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher =
+        ExtendedVigenereCipher(_key);
     List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(ciphertext);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> plaintext = rc4.decrypt(vigenereDecrypted);
