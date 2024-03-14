@@ -1,4 +1,4 @@
-export 'ExtendedVigenereCipher.dart';
+export 'extended_vigenere_cipher.dart';
 
 class ExtendedVigenereCipher {
   final String _key;

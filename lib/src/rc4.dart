@@ -1,6 +1,6 @@
 export 'rc4.dart';
 class ModifiedRC4 {
-  List<int> _key;
+  final List<int> _key;
   late List<int> _state;
 
   int _i = 0;

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tugas_2_kriptografi_koding/src/ExtendedVigenereCipher.dart';
+import 'package:tugas_2_kriptografi_koding/src/extended_vigenere_cipher.dart';
 import 'package:tugas_2_kriptografi_koding/src/rc4.dart';
 
 void main() {
@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,10 @@ class MyApp extends StatelessWidget {
 }
 
 class EncryptionScreen extends StatefulWidget {
-  const EncryptionScreen({Key? key}) : super(key: key);
+  const EncryptionScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _EncryptionScreenState createState() => _EncryptionScreenState();
 }
 
