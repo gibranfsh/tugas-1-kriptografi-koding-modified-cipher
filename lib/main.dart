@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +26,9 @@ class MyApp extends StatelessWidget {
 }
 
 class EncryptionScreen extends StatefulWidget {
-  const EncryptionScreen({super.key});
+  const EncryptionScreen({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _EncryptionScreenState createState() => _EncryptionScreenState();
 }
 
@@ -37,7 +36,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   String _inputText = '';
   String _outputText = '';
   String _key = '';
-  bool _isEncryptMode = true;
+  bool _isEncryptMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +132,10 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   }
 
   void _decrypt() {
-    List<int> ciphertext = base64Decode(_inputText);
+    // Ensure the input text is properly padded
+    String paddedInputText =
+        _inputText.padRight((_inputText.length + 3) & ~3, '=');
+    List<int> ciphertext = base64Decode(paddedInputText);
     List<int> key = utf8.encode(_key);
     ExtendedVigenereCipher extendedVigenereCipher =
         ExtendedVigenereCipher(_key);
@@ -153,7 +155,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     String fileExtension = fileName.split('.').last; // Extract file extension
 
     // Check if the mode is encrypt or decrypt
-    if (_isEncryptMode) {
+    if (!_isEncryptMode) {
       // Encryption mode
       ModifiedRC4 rc4 = ModifiedRC4(key);
       List<int> rc4Encrypted = rc4.encrypt(fileBytes);
@@ -182,7 +184,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
           ExtendedVigenereCipher(_key);
       List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(fileBytes);
       ModifiedRC4 rc4 = ModifiedRC4(key);
-      List<int> rc4Decrypted = rc4.decrypt(vigenereDecrypted);
+      List<int> plaintext = rc4.decrypt(vigenereDecrypted);
 
       // Get the directory path for the Android download folder
       String downloadsDirectoryPath = '';
@@ -194,7 +196,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
           '$downloadsDirectoryPath/${fileName}_decrypted.$fileExtension';
 
       // Write the decrypted data to the file in the download folder
-      await File(decryptedFilePath).writeAsBytes(rc4Decrypted);
+      await File(decryptedFilePath).writeAsBytes(plaintext);
       setState(() {
         _outputText = 'File decrypted successfully: $decryptedFilePath';
       });
