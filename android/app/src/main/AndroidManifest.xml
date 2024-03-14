@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Add any other permissions your app requires -->
+    
     <application
         android:label="tugas_2_kriptografi_koding"
         android:name="${applicationName}"

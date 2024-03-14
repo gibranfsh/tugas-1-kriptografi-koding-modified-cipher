@@ -6,14 +6,16 @@ class ModifiedRC4 {
   int _i = 0;
   int _j = 0;
 
-  ModifiedRC4(this._key) {
-    _state = List<int>.generate(256, (i) => i);
-    int j = 0;
+ModifiedRC4(this._key) {
+  _state = List<int>.generate(256, (i) => i);
+  int j = 0;
+  if (_key.isNotEmpty) { // Add this check
     for (int i = 0; i < 256; i++) {
       j = (j + _state[i] + _key[i % _key.length]) % 256;
       _swap(i, j);
     }
   }
+}
 
   void _swap(int i, int j) {
     int temp = _state[i];

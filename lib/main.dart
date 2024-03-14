@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tugas_2_kriptografi_koding/src/ExtendedVigenereCipher.dart';
 import 'package:tugas_2_kriptografi_koding/src/rc4.dart';
 
@@ -95,6 +98,16 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
               },
               child: Text(!_isEncryptMode ? 'Encrypt' : 'Decrypt'),
             ),
+            ElevatedButton(
+              onPressed: () async {
+                FilePickerResult? filePath =
+                    await FilePicker.platform.pickFiles();
+                if (filePath != null) {
+                  _processFile(filePath.files.single.path!);
+                }
+              },
+              child: const Text('Choose File'),
+            ),
             const SizedBox(height: 20.0),
             Text(
               'Output Text: $_outputText',
@@ -130,5 +143,61 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     setState(() {
       _outputText = utf8.decode(plaintext);
     });
+  }
+
+  void _processFile(String filePath) async {
+    List<int> fileBytes = await File(filePath).readAsBytes();
+    List<int> key = utf8.encode(_key);
+    String fileName =
+        filePath.split('/').last; // Extract file name from the path
+    String fileExtension = fileName.split('.').last; // Extract file extension
+
+    // Check if the mode is encrypt or decrypt
+    if (_isEncryptMode) {
+      // Encryption mode
+      ModifiedRC4 rc4 = ModifiedRC4(key);
+      List<int> rc4Encrypted = rc4.encrypt(fileBytes);
+      ExtendedVigenereCipher extendedVigenereCipher =
+          ExtendedVigenereCipher(_key);
+      List<int> vigenereEncrypted =
+          extendedVigenereCipher.encrypt(rc4Encrypted);
+
+      // Get the directory path for the Android download folder
+      String downloadsDirectoryPath = '';
+      final Directory? downloadsDir = await getDownloadsDirectory();
+      downloadsDirectoryPath = downloadsDir!.path;
+
+      // Generate the file path for the encrypted file in the download folder
+      String encryptedFilePath =
+          '$downloadsDirectoryPath/${fileName}_encrypted.$fileExtension';
+
+      // Write the encrypted data to the file in the download folder
+      await File(encryptedFilePath).writeAsBytes(vigenereEncrypted);
+      setState(() {
+        _outputText = 'File encrypted successfully: $encryptedFilePath';
+      });
+    } else {
+      // Decryption mode
+      ExtendedVigenereCipher extendedVigenereCipher =
+          ExtendedVigenereCipher(_key);
+      List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(fileBytes);
+      ModifiedRC4 rc4 = ModifiedRC4(key);
+      List<int> rc4Decrypted = rc4.decrypt(vigenereDecrypted);
+
+      // Get the directory path for the Android download folder
+      String downloadsDirectoryPath = '';
+      final Directory? downloadsDir = await getDownloadsDirectory();
+      downloadsDirectoryPath = downloadsDir!.path;
+
+      // Generate the file path for the decrypted file in the download folder
+      String decryptedFilePath =
+          '$downloadsDirectoryPath/${fileName}_decrypted.$fileExtension';
+
+      // Write the decrypted data to the file in the download folder
+      await File(decryptedFilePath).writeAsBytes(rc4Decrypted);
+      setState(() {
+        _outputText = 'File decrypted successfully: $decryptedFilePath';
+      });
+    }
   }
 }
