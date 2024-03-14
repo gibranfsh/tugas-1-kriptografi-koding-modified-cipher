@@ -143,7 +143,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> plaintext = rc4.decrypt(vigenereDecrypted);
     setState(() {
-      _outputText = utf8.decode(plaintext);
+      _outputText = String.fromCharCodes(plaintext);
     });
   }
 
