@@ -9,7 +9,7 @@ class ModifiedRC4 {
 ModifiedRC4(this._key) {
   _state = List<int>.generate(256, (i) => i);
   int j = 0;
-  if (_key.isNotEmpty) { // Add this check
+  if (_key.isNotEmpty) {
     for (int i = 0; i < 256; i++) {
       j = (j + _state[i] + _key[i % _key.length]) % 256;
       _swap(i, j);
@@ -40,7 +40,6 @@ ModifiedRC4(this._key) {
   }
 
   List<int> decrypt(List<int> ciphertext) {
-    // Decryption is the same as encryption
     return encrypt(ciphertext);
   }
 }
