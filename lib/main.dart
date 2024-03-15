@@ -100,6 +100,17 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                if (!_isEncryptMode) {
+                  _encrypt();
+                } else {
+                  _decrypt();
+                }
+                await _downloadResult();
+              },
+              child: Text('Download ${_isEncryptMode ? 'Decrypted' : 'Encrypted'} Text'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
                 FilePickerResult? filePath =
                     await FilePicker.platform.pickFiles();
                 if (filePath != null) {
@@ -124,7 +135,8 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     List<int> key = utf8.encode(_key);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> rc4Encrypted = rc4.encrypt(plaintext);
-    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher =
+        ExtendedVigenereCipher(_key);
     List<int> vigenereEncrypted = extendedVigenereCipher.encrypt(rc4Encrypted);
     setState(() {
       _outputText = base64Encode(vigenereEncrypted);
@@ -132,13 +144,15 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   }
 
   void _decrypt() {
-    String paddedInputText = _inputText.padRight((_inputText.length + 3) & ~3, 's');
+    String paddedInputText =
+        _inputText.padRight((_inputText.length + 3) & ~3, 's');
     while (paddedInputText.length % 4 != 0) {
       paddedInputText += 's';
     }
     List<int> ciphertext = base64Decode(paddedInputText);
     List<int> key = utf8.encode(_key);
-    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher =
+        ExtendedVigenereCipher(_key);
     List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(ciphertext);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> plaintext = rc4.decrypt(vigenereDecrypted);
@@ -147,12 +161,36 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     });
   }
 
-  void _processFile(String filePath)async {
+  Future<void> _downloadResult() async {
+    if (_outputText.isNotEmpty) {
+      try {
+        final String fileName =
+            !_isEncryptMode ? 'encrypted_text.txt' : 'decrypted_text.txt';
+        final String downloadsDirectoryPath =
+            (await getDownloadsDirectory())!.path;
+        final String filePath = '$downloadsDirectoryPath/$fileName';
+        final File resultFile = File(filePath);
+        await resultFile.writeAsString(_outputText);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('File downloaded successfully: $filePath'),
+        ));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Failed to download file: $e'),
+        ));
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('No output text available to download!'),
+      ));
+    }
+  }
+
+  void _processFile(String filePath) async {
     List<int> fileBytes = await File(filePath).readAsBytes();
     List<int> key = utf8.encode(_key);
-    String fileName =
-        filePath.split('/').last;
-    String fileExtension = fileName.split('.').last; 
+    String fileName = filePath.split('/').last;
+    String fileExtension = fileName.split('.').last;
     if (!_isEncryptMode) {
       ModifiedRC4 rc4 = ModifiedRC4(key);
       List<int> rc4Encrypted = rc4.encrypt(fileBytes);
