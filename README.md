@@ -36,6 +36,6 @@ flutter run
 |  1  | Program dapat menerima pesan berupa file text maupun file biner) atau pesan yang diketikkan dari papan-ketik.      | ✔           |           |   
 |  2  | Program dapat mengenkripsi dan mendekripsi pesan.        | ✔           |           | Ciphertext yang dimasukkan pengguna diasumsikan dalam base64 dan harus kelipatan 4. Apabila tidak kelipatan 4, akan ditambahkan dengan huruf dummy.
 |  3  | Program dapat menampilkan plainteks dan cipherteks di layer.         | ✔           |           |     
-|  4  | Program dapat menyimpan cipherteks ke dalam file.    | ✔           |           |.                       
+|  4  | Program dapat menyimpan cipherteks ke dalam file.    | ✔           |           |                      
 |  5  | Kunci dimasukkan oleh pengguna. Panjang kunci bebas. | ✔           |           |                                                                                              |   
 
