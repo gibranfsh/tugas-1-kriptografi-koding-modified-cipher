@@ -12,17 +12,23 @@
 git clone https://github.com/gibranfsh/tugas-2-kriptografi-koding-modified-cipher.git
 ```
 
-2. Open Simulator/Emulator
+2. Open Simulator/Emulator (Untuk Mac)
 
 ```bash
 open -a simulator
 ```
+
+atau Jalankan android emulator dari Android Studio (Untuk Windows)
 
 3. Jalankan Program
 
 ```bash
 flutter run
 ```
+
+## APK dari Aplikasi
+
+Link : https://drive.google.com/drive/folders/1IRJ9BJrPWaMA6vRFSiurlWwHNO8lsYEw?usp=sharing
 
 ## Kontributor
 
