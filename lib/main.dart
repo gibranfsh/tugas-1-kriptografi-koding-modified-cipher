@@ -132,9 +132,9 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   }
 
   void _decrypt() {
-    String paddedInputText = _inputText.padRight((_inputText.length + 3) & ~3, '=');
+    String paddedInputText = _inputText.padRight((_inputText.length + 3) & ~3, 's');
     while (paddedInputText.length % 4 != 0) {
-      paddedInputText += '=';
+      paddedInputText += 's';
     }
     List<int> ciphertext = base64Decode(paddedInputText);
     List<int> key = utf8.encode(_key);
