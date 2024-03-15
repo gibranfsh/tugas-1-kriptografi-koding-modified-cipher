@@ -1,16 +1,47 @@
-# tugas_2_kriptografi_koding
+# Modified RC4
 
-A new Flutter project.
+## Tugas Kecil 2 - II4031 Kriptografi dan Koding
 
-## Getting Started
+## Cipher yang dimodifikasi : Extended Vigenere Cipher
 
-This project is a starting point for a Flutter application.
+## Instalasi
 
-A few resources to get you started if this is your first Flutter project:
+1. Clone repository
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+git clone https://github.com/gibranfsh/tugas-2-kriptografi-koding-modified-cipher.git
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Open Simulator/Emulator
+
+```bash
+open -a simulator
+```
+
+3. Jalankan Program
+
+```bash
+flutter run
+```
+
+## Kontributor
+
+- 18221055 - Mochamad Syahrial Alzaidan
+- 18221069 - Gibran Fasha Ghazanfar
+
+## Tabel Fitur
+
+| No  | Feature                  | Success (✔) | Fail (❌) | Details                                                                                           |
+| :-: | :----------------------- | :---------- | :-------- | :-----------------------------------------------------------------------------------------------  |
+|  1  | Program dapat menerima pesan berupa file sembarang (file text maupun file
+biner) atau pesan yang diketikkan dari papan-ketik.
+          | ✔           |           |                                                                                                   |
+|  2  | Program dapat mengenkripsi plainteks dan mendekripsi cipherteks menjadi
+plainteks semula
+ | ✔           |           | Ciphertext yang dimasukkan pengguna diasumsikan dalam base64 dan harus kelipatan 4. Apabila tidak kelipatan 4, akan ditambahkan dengan huruf dummy.                                                                                                  |
+|  3  | Untuk pesan berupa text, program dapat menampilkan plainteks dan cipherteks di
+layer (format string atau base64).
+          | ✔           |           |          |
+|  4  | Program dapat menyimpan cipherteks ke dalam file.           | ✔           |           |                 |
+|  5  | Kunci dimasukkan oleh pengguna. Panjang kunci bebas.            | ✔           |           |                                                                                                   |
+|  6  | Auto-Key Vigenere Cipher | ✔           |           |                                                                                                   |
