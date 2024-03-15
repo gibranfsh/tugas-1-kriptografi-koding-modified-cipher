@@ -31,17 +31,18 @@ flutter run
 
 ## Tabel Fitur
 
-| No  | Feature                  | Success (✔) | Fail (❌) | Details                                                                                           |
-| :-: | :----------------------- | :---------- | :-------- | :-----------------------------------------------------------------------------------------------  |
-|  1  | Program dapat menerima pesan berupa file sembarang (file text maupun file
-biner) atau pesan yang diketikkan dari papan-ketik.
-          | ✔           |           |                                                                                                   |
-|  2  | Program dapat mengenkripsi plainteks dan mendekripsi cipherteks menjadi
-plainteks semula
- | ✔           |           | Ciphertext yang dimasukkan pengguna diasumsikan dalam base64 dan harus kelipatan 4. Apabila tidak kelipatan 4, akan ditambahkan dengan huruf dummy.                                                                                                  |
-|  3  | Untuk pesan berupa text, program dapat menampilkan plainteks dan cipherteks di
-layer (format string atau base64).
-          | ✔           |           |          |
-|  4  | Program dapat menyimpan cipherteks ke dalam file.           | ✔           |           |                 |
-|  5  | Kunci dimasukkan oleh pengguna. Panjang kunci bebas.            | ✔           |           |                                                                                                   |
-|  6  | Auto-Key Vigenere Cipher | ✔           |           |                                                                                                   |
+| No  | Feature                                       | Success (✔) | Fail (❌) | Details                                                                                              |
+| :-: | --------------------------------------------- | :---------- | :-------- | :--------------------------------------------------------------------------------------------------- |
+|  1  | Program dapat menerima pesan berupa file      | ✔           |           | Program accepts messages in any format (text or binary files) or typed input from the keyboard.     |
+|     | (text maupun file biner) atau pesan yang      |             |           |                                                                                                      |
+|     | diketikkan dari papan-ketik.                  |             |           |                                                                                                      |
+|  2  | Program dapat mengenkripsi dan mendekripsi     | ✔           |           | Ciphertext yang dimasukkan pengguna diasumsikan dalam base64 dan harus kelipatan 4. Apabila tidak  |
+|     | pesan.                                        |             |           |   kelipatan 4, akan ditambahkan dengan huruf dummy.                       |
+|  3  | Program dapat menampilkan plainteks dan        | ✔           |           |     |
+|     | cipherteks di layer.                          |             |           |                                                                                                      |
+|  4  | Program dapat menyimpan cipherteks ke dalam   | ✔           |           |.                                                               |
+|     | file.                                         |             |           |                                                                                                      |
+|  5  | Kunci dimasukkan oleh pengguna. Panjang kunci | ✔           |           |                                                                                              |
+|     | bebas.                                        |             |           |                                                                                                      |
+|  6  | Auto-Key Vigenere Cipher                      | ✔           |           |                                                                                                           |
+
