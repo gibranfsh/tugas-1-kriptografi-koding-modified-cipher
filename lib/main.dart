@@ -123,8 +123,7 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     List<int> key = utf8.encode(_key);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> rc4Encrypted = rc4.encrypt(plaintext);
-    ExtendedVigenereCipher extendedVigenereCipher =
-        ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
     List<int> vigenereEncrypted = extendedVigenereCipher.encrypt(rc4Encrypted);
     setState(() {
       _outputText = base64Encode(vigenereEncrypted);
@@ -132,13 +131,13 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
   }
 
   void _decrypt() {
-    // Ensure the input text is properly padded
-    String paddedInputText =
-        _inputText.padRight((_inputText.length + 3) & ~3, '=');
+    String paddedInputText = _inputText.padRight((_inputText.length + 3) & ~3, '=');
+    while (paddedInputText.length % 4 != 0) {
+      paddedInputText += '=';
+    }
     List<int> ciphertext = base64Decode(paddedInputText);
     List<int> key = utf8.encode(_key);
-    ExtendedVigenereCipher extendedVigenereCipher =
-        ExtendedVigenereCipher(_key);
+    ExtendedVigenereCipher extendedVigenereCipher = ExtendedVigenereCipher(_key);
     List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(ciphertext);
     ModifiedRC4 rc4 = ModifiedRC4(key);
     List<int> plaintext = rc4.decrypt(vigenereDecrypted);
@@ -147,16 +146,13 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
     });
   }
 
-  void _processFile(String filePath) async {
+  void _processFile(String filePath)async {
     List<int> fileBytes = await File(filePath).readAsBytes();
     List<int> key = utf8.encode(_key);
     String fileName =
-        filePath.split('/').last; // Extract file name from the path
-    String fileExtension = fileName.split('.').last; // Extract file extension
-
-    // Check if the mode is encrypt or decrypt
+        filePath.split('/').last;
+    String fileExtension = fileName.split('.').last; 
     if (!_isEncryptMode) {
-      // Encryption mode
       ModifiedRC4 rc4 = ModifiedRC4(key);
       List<int> rc4Encrypted = rc4.encrypt(fileBytes);
       ExtendedVigenereCipher extendedVigenereCipher =
@@ -164,38 +160,31 @@ class _EncryptionScreenState extends State<EncryptionScreen> {
       List<int> vigenereEncrypted =
           extendedVigenereCipher.encrypt(rc4Encrypted);
 
-      // Get the directory path for the Android download folder
       String downloadsDirectoryPath = '';
       final Directory? downloadsDir = await getDownloadsDirectory();
       downloadsDirectoryPath = downloadsDir!.path;
 
-      // Generate the file path for the encrypted file in the download folder
       String encryptedFilePath =
           '$downloadsDirectoryPath/${fileName}_encrypted.$fileExtension';
 
-      // Write the encrypted data to the file in the download folder
       await File(encryptedFilePath).writeAsBytes(vigenereEncrypted);
       setState(() {
         _outputText = 'File encrypted successfully: $encryptedFilePath';
       });
     } else {
-      // Decryption mode
       ExtendedVigenereCipher extendedVigenereCipher =
           ExtendedVigenereCipher(_key);
       List<int> vigenereDecrypted = extendedVigenereCipher.decrypt(fileBytes);
       ModifiedRC4 rc4 = ModifiedRC4(key);
       List<int> plaintext = rc4.decrypt(vigenereDecrypted);
 
-      // Get the directory path for the Android download folder
       String downloadsDirectoryPath = '';
       final Directory? downloadsDir = await getDownloadsDirectory();
       downloadsDirectoryPath = downloadsDir!.path;
 
-      // Generate the file path for the decrypted file in the download folder
       String decryptedFilePath =
           '$downloadsDirectoryPath/${fileName}_decrypted.$fileExtension';
 
-      // Write the decrypted data to the file in the download folder
       await File(decryptedFilePath).writeAsBytes(plaintext);
       setState(() {
         _outputText = 'File decrypted successfully: $decryptedFilePath';
