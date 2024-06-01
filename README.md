@@ -1,4 +1,4 @@
-# Modified RC4
+# Program Modified RC4 berbasis Mobile ✨
 
 ## Tugas Kecil 2 - II4031 Kriptografi dan Koding
 
